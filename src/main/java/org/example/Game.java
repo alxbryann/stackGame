@@ -153,10 +153,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             g2d.setColor(Color.RED);
             g2d.setFont(new Font("Agdasima-Bold", Font.PLAIN, 50));
             g2d.drawString("GAME OVER", 160, 300);
-            /*Map<String, Object> db = new HashMap<>();
+            Map<String, Object> db = new HashMap<>();
             db.put("1", String.valueOf(score));
-            firebase.insertData("scores", db);
-            if(Integer.parseInt(firebase.getBestScore()) <= score){
+            firebase.insertData("score", db);
+            /*if(Integer.parseInt(firebase.getBestScore()) <= score){
                 Map<String, Object> bestScore = new HashMap<>();
                 bestScore.put("bestScore", String.valueOf(score));
                 firebase.insertData("bestScore", "OpWsBfD65NHN3pt8mnyf", bestScore);
