@@ -80,7 +80,7 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         this.boardHeigth = boardHeigth;
         setPreferredSize(new Dimension(this.boardWidth, this.boardHeigth));
         try {
-            backgroundImage = ImageIO.read(new File("C:/Users/barr2/Desktop/bg.png"));
+            backgroundImage = ImageIO.read(new File("src/main/resources/bg.png"));
         } catch (IOException e) {
         }
 

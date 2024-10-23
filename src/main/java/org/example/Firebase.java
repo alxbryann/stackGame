@@ -21,6 +21,7 @@ public class Firebase {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             InputStream is = classLoader.getResourceAsStream("firebaseCon.json");
             GoogleCredentials googleCredentials = GoogleCredentials.fromStream(is);
+            @SuppressWarnings("deprecation")
             FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(googleCredentials).build();
             FirebaseApp.initializeApp(options);
             firestore = FirestoreClient.getFirestore();
@@ -52,8 +53,7 @@ public class Firebase {
         }
 
     }
-
-
+    
     public String getBestScore(){
         String bestScore = " ";
         try {
