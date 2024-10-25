@@ -10,13 +10,12 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
 public class Game extends JPanel implements ActionListener, KeyListener {
 
+    //Tile class
     private static class Tile {
         int x;
         int y;
@@ -29,50 +28,40 @@ public class Game extends JPanel implements ActionListener, KeyListener {
             this.width = width;
             this.color = color;
         }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
     }
 
-
-    //Jframe size
+    // Jframe size
     int boardWidth;
     int boardHeigth;
 
-    //Initial Block preset
+    // Initial Block preset
     Tile initialBlock;
     int BlockWidth;
     int BlockHeigth;
 
-    //New block preset
+    // New block preset
     Tile newBlock;
 
-    //Velocity
+    // Velocity
     int velocityX;
     int velocityY;
 
-    //Stack
+    // Stack
     Stack<Tile> tiles = new Stack<>();
 
-    //Gamemode
+    // Gamemode
     boolean gameMode;
     boolean gameOver;
 
-    //Game variables
+    // Game variables
     Timer gameLoop;
     Random rand = new Random();
     int currentSize;
     int score;
     int initialDirection;
     BufferedImage backgroundImage;
-    String bestScore;
 
-
-    Firebase firebase = new Firebase();
-
-
-    //Constructor
+    // Constructor
     public Game(int boardWidth, int boardHeigth) {
         addKeyListener(this);
         setFocusable(true);
@@ -84,18 +73,18 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         } catch (IOException e) {
         }
 
-        //Location of initialBlock
+        // Location of initialBlock
         BlockWidth = 150;
         BlockHeigth = 40;
         initialBlock = new Tile(600 / 2 - BlockWidth / 2, 670, BlockWidth, getColor());
         tiles.push(initialBlock);
 
-        //New block
+        // New block
         newBlock = new Tile(600 / 2, 120, BlockWidth - 20, getColor());
         velocityX = 10;
         velocityY = 10;
 
-        //Gameloop
+        // Gameloop
         gameLoop = new Timer(10, this);
         gameLoop.start();
         currentSize = tiles.size();
@@ -103,8 +92,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         gameMode = false;
         score = 0;
         initialDirection = rand.nextInt(2);
-        firebase.createConnection();
-        bestScore = firebase.getBestScore();
     }
 
     public void paintComponent(Graphics g) {
@@ -145,25 +132,18 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         g2d.setColor(Color.BLUE);
         g2d.setFont(new Font("Agdasima-Bold", Font.PLAIN, 30));
         g2d.drawString("Score: " + score, 30, 30);
-        g2d.drawString("best score: " + bestScore, 30, 60);
 
         if (gameOver) {
             g2d.setColor(Color.black);
-            g2d.fillRoundRect(135, 240, 350, 250, 30, 30);
+            g2d.fillRoundRect(135, 240, 350, 300, 30, 30);
             g2d.setColor(Color.RED);
             g2d.setFont(new Font("Agdasima-Bold", Font.PLAIN, 50));
             g2d.drawString("GAME OVER", 160, 300);
-            Map<String, Object> db = new HashMap<>();
-            db.put("1", String.valueOf(score));
-            firebase.insertData("score", db);
-            /*if(Integer.parseInt(firebase.getBestScore()) <= score){
-                Map<String, Object> bestScore = new HashMap<>();
-                bestScore.put("bestScore", String.valueOf(score));
-                firebase.insertData("bestScore", "OpWsBfD65NHN3pt8mnyf", bestScore);
-            }*/
+            g2d.drawString("SCORE: " + score, 160, 400);
+
+            
         }
     }
-
 
     public void bouncing() {
         if (tiles.size() > currentSize) {
@@ -219,13 +199,8 @@ public class Game extends JPanel implements ActionListener, KeyListener {
         }
     }
 
-
     public Color getColor() {
-        int r = rand.nextInt(256);
-        int g = rand.nextInt(256);
-        int b = rand.nextInt(256);
-
-        return new Color(r, g, b);
+        return new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
     }
 
     @Override
@@ -239,10 +214,6 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
-    @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == 32) {
             if (!gameMode)
@@ -251,7 +222,10 @@ public class Game extends JPanel implements ActionListener, KeyListener {
     }
 
     @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
     public void keyReleased(KeyEvent e) {
     }
 }
-
